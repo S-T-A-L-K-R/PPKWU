@@ -11,7 +11,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
 
         print(self.path)
-        now = dt.now()
+        now = dt.utcnow()
         s = now.strftime("%H:%M:%S") + "\n"
         t = s.encode() 
         if self.path == '/':
