@@ -11,7 +11,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
 
         print(self.path)
-        now = dt.utcnow()
+        LOCAL_TIMEZONE = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+        now = dt.now()
         s = now.strftime("%H:%M:%S") + "\n"
         t = s.encode() 
         if self.path == '/':
