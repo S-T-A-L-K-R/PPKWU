@@ -2,6 +2,7 @@
 import http.server
 import socketserver
 import os
+import datetime
 from datetime import datetime as dt
 
 #print('source code for "http.server":', http.server.__file__)
@@ -12,7 +13,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 
         print(self.path)
         LOCAL_TIMEZONE = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
-        now = dt.now()
+        # now = dt.now(pytz.timezone("Europe/Warsaw"))
+        now = dt.now(LOCAL_TIMEZONE)
         s = now.strftime("%H:%M:%S") + "\n"
         t = s.encode() 
         if self.path == '/':
