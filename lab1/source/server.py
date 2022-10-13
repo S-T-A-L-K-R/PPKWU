@@ -12,8 +12,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 
         print(self.path)
         now = dt.now()
-        s = now.strftime("%H:%M:%S")
-        t = s.encode()
+        s = now.strftime("%H:%M:%S") + "\n"
+        t = s.encode() 
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
