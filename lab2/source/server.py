@@ -20,10 +20,11 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         cmd = ''
         if query != '':
             query_components = dict(qc.split("=") for qc in query.split("&"))
-            cmd = query_components["cmd"]
+            cmd = query_components.get("cmd")
             print(cmd)
-            # if query_components["rev"]:
-            #     print(query_components["rev"])
+            if cmd == "rev":
+                str = query_components.get("str")
+            
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
@@ -35,7 +36,9 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                 t = s.encode() 
                 self.wfile.write(t)
             elif cmd == "rev":
-                pass
+                str = str[::-1]
+                str = str.encode()
+                self.wfile.write(str)
             else:
                 self.wfile.write(b"Hello World!\n")
         else:
