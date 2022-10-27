@@ -3,7 +3,7 @@ container_name:=lab2_test_container_python
 
 docker_build:
 	echo "Prepare docker here..."
-	docker build -t $(docker_name):latest .
+	docker build -t $(docker_name):latest . --network host
 docker_start:
 	echo "Start docker here..."
 	docker run -p 4080:4080 --name $(container_name) $(docker_name):latest &
