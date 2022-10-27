@@ -2,7 +2,7 @@
 import http.server
 import socketserver
 import os
-from urlparse import urlparse
+from urllib import parse
 
 #print('source code for "http.server":', http.server.__file__)
 
@@ -11,7 +11,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
 
         print(self.path)
-        query = urlparse(self.path).query
+        query = parse(self.path).query
         query_components = dict(qc.split("=") for qc in query.split("&"))
         cmd = query_components["cmd"]
         print(cmd)
