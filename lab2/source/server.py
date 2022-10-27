@@ -12,21 +12,30 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 
         print(self.path)
         query = urlparse(self.path).query
-        query_components = dict(qc.split("=") for qc in query.split("&"))
-        cmd = query_components["cmd"]
-        print(cmd)
+        if query != '':
+            query_components = dict(qc.split("=") for qc in query.split("&"))
+            cmd = query_components["cmd"]
+            print(cmd)
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
-            self.end_headers()            
-            self.wfile.write(b"Hello World!\n")
+            self.end_headers()
+            if cmd == "time":
+                now = dt.now(pytz.timezone("Europe/Warsaw"))
+                s = now.strftime("%H:%M:%S") + "\n"
+                t = s.encode() 
+                self.wfile.write(t)
+            elif cmd == "rev":
+                pass
+            else:
+                self.wfile.write(b"Hello World!\n")
         else:
             super().do_GET()
     
 # --- main ---
 
-PORT = 4080
+PORT = 4081
 
 print(f'Starting: http://localhost:{PORT}')
 
