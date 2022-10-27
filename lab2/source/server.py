@@ -2,7 +2,10 @@
 import http.server
 import socketserver
 import os
+
+from datetime import datetime as dt
 from urllib.parse import urlparse
+import pytz
 
 #print('source code for "http.server":', http.server.__file__)
 
@@ -11,25 +14,27 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
 
         print(self.path)
+        parser = urlparse(self.path)
+        self.path = parser.path
+        query = parser.query
+        if query != '':
+            query_components = dict(qc.split("=") for qc in query.split("&"))
+            cmd = query_components["cmd"]
+            print(cmd)
+            # if query_components["rev"]:
+            #     print(query_components["rev"])
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
-            
-            query = urlparse(self.path).query
-            if query != '':
-                query_components = dict(qc.split("=") for qc in query.split("&"))
-                cmd = query_components["cmd"]
-                print(cmd)
-                if cmd == "time":
-                    now = dt.now(pytz.timezone("Europe/Warsaw"))
-                    s = now.strftime("%H:%M:%S") + "\n"
-                    t = s.encode() 
-                    self.wfile.write(t)
-                elif cmd == "rev":
-                    pass
-
+            if cmd == "time":
+                now = dt.now(pytz.timezone("Europe/Warsaw"))
+                s = now.strftime("%H:%M:%S") + "\n"
+                t = s.encode() 
+                self.wfile.write(t)
+            elif cmd == "rev":
+                pass
             else:
                 self.wfile.write(b"Hello World!\n")
         else:
@@ -37,7 +42,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     
 # --- main ---
 
-PORT = 4080
+PORT = 4081
 
 print(f'Starting: http://localhost:{PORT}')
 
