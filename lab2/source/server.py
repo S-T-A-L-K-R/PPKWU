@@ -17,6 +17,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         parser = urlparse(self.path)
         self.path = parser.path
         query = parser.query
+        cmd = ''
         if query != '':
             query_components = dict(qc.split("=") for qc in query.split("&"))
             cmd = query_components["cmd"]
