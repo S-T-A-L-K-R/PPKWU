@@ -2,6 +2,7 @@
 import http.server
 import socketserver
 import os
+import json
 
 from datetime import datetime as dt
 from urllib.parse import urlparse
@@ -38,7 +39,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
             # self.wfile.write(b"Hello World!\n")
-            self.wfile.write(response)
+            self.wfile.write(json.dumps(response))
         else:
             super().do_GET()
     
