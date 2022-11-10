@@ -39,7 +39,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
             # self.wfile.write(b"Hello World!\n")
-            self.wfile.write(json.dumps(response))
+            self.wfile.write(json.dumps(response).encode())
         else:
             super().do_GET()
     
