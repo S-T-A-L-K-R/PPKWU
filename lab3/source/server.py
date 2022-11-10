@@ -20,17 +20,25 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         cmd = ''
         if query != '':
             query_components = dict(qc.split("=") for qc in query.split("&"))
-            cmd = query_components.get("cmd")
-            print(cmd)
-            if cmd == "rev":
-                str = query_components.get("str")
+            str = query_components.get("str")
+            print(str)
             
+        response =  {"lowercase" : 0, 
+                     "uppercase" : 0,
+                     "digits" : 0,
+                     "special" : 0}
+        response["lowercase"] = sum(1 for c in str if c.islower())
+        response["uppercase"] = sum(1 for c in str if c.isupper())
+        response["digits"] = sum(1 for c in str if c.isnum())
+        response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
+        
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
-            self.wfile.write(b"Hello World!\n")
+            # self.wfile.write(b"Hello World!\n")
+            self.wfile.write(response)
         else:
             super().do_GET()
     
