@@ -29,7 +29,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                      "special" : 0}
         response["lowercase"] = sum(1 for c in str if c.islower())
         response["uppercase"] = sum(1 for c in str if c.isupper())
-        response["digits"] = sum(1 for c in str if c.isnum())
+        response["digits"] = sum(1 for c in str if c.isnumeric())
         response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
         
         if self.path == '/':
