@@ -9,14 +9,33 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
 
-        print(self.path)
+        pprint(self.path)
+        parser = urlparse(self.path)
+        self.path = parser.path
+        query = parser.query
+        cmd = ''
+        if query != '':
+            query_components = dict(qc.split("=") for qc in query.split("&"))
+            str = query_components.get("str")
+            print(str)
+            
+        response =  {"sum" : 0, 
+                     "sub" : 0,
+                     "mul" : 0,
+                     "div" : 0,
+                     "mod" : 0}
+        response["lowercase"] = sum(1 for c in str if c.islower())
+        response["uppercase"] = sum(1 for c in str if c.isupper())
+        response["digits"] = sum(1 for c in str if c.isnumeric())
+        response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
         
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
-            self.end_headers()            
-            self.wfile.write(b"Hello World!\n")
+            self.end_headers()
+            # self.wfile.write(b"Hello World!\n")
+            self.wfile.write(json.dumps(response).encode())
         else:
             super().do_GET()
     
