@@ -9,7 +9,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
     
     def do_GET(self):
 
-        pprint(self.path)
+        print(self.path)
         parser = urlparse(self.path)
         self.path = parser.path
         query = parser.query
