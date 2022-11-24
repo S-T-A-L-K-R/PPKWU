@@ -16,18 +16,22 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         cmd = ''
         if query != '':
             query_components = dict(qc.split("=") for qc in query.split("&"))
-            str = query_components.get("str")
-            print(str)
+            num1 = query_components.get("num1")
+            num2 = query_components.get("num2")
+            print(num1)
+            print(num2)
             
         response =  {"sum" : 0, 
                      "sub" : 0,
                      "mul" : 0,
                      "div" : 0,
                      "mod" : 0}
-        response["lowercase"] = sum(1 for c in str if c.islower())
-        response["uppercase"] = sum(1 for c in str if c.isupper())
-        response["digits"] = sum(1 for c in str if c.isnumeric())
-        response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
+
+        response["sum"] = num1 + num2
+        response["sub"] = num1 - num2
+        response["mul"] = num1 * num2
+        response["div"] = int(num1 / num2)
+        response["mod"] = num1 % num2
         
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
