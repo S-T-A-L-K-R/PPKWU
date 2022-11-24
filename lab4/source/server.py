@@ -21,8 +21,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         cmd = ''
         if query != '':
             query_components = dict(qc.split("=") for qc in query.split("&"))
-            num1 = query_components.get("num1")
-            num2 = query_components.get("num2")
+            num1 = int(query_components.get("num1"))
+            num2 = int(query_components.get("num2"))
             print(num1)
             print(num2)
             
