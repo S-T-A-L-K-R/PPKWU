@@ -17,6 +17,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         print(self.path)
         parser = urlparse(self.path)
         self.path = parser.path
+        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
+        post_data = self.rfile.read(content_length).decode() # <--- Gets the data itself
         query = parser.query
         cmd = ''
         if query != '':
