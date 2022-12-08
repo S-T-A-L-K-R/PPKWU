@@ -23,8 +23,20 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             query_components = dict(qc.split("=") for qc in query.split("&"))
             num1 = int(query_components.get("num1"))
             num2 = int(query_components.get("num2"))
+            str = query_components.get("str")
             print(num1)
             print(num2)
+            print(str)
+            
+        response =  {"lowercase" : 0, 
+                     "uppercase" : 0,
+                     "digits" : 0,
+                     "special" : 0}
+        response["lowercase"] = sum(1 for c in str if c.islower())
+        response["uppercase"] = sum(1 for c in str if c.isupper())
+        response["digits"] = sum(1 for c in str if c.isnumeric())
+        response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
+        
             
         response =  {"sum" : 0, 
                      "sub" : 0,
