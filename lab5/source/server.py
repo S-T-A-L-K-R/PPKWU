@@ -12,7 +12,7 @@ import pytz
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
-    def do_GET(self):
+    def do_POST(self):
 
         print(self.path)
         parser = urlparse(self.path)
@@ -21,12 +21,12 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         cmd = ''
         if query != '':
             query_components = dict(qc.split("=") for qc in query.split("&"))
+            str = query_components.get("str")
             num1 = int(query_components.get("num1"))
             num2 = int(query_components.get("num2"))
-            str = query_components.get("str")
+            print(str)
             print(num1)
             print(num2)
-            print(str)
             
         response =  {"lowercase" : 0, 
                      "uppercase" : 0,
@@ -58,7 +58,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             # self.wfile.write(b"Hello World!\n")
             self.wfile.write(json.dumps(response).encode())
         else:
-            super().do_GET()
+            super().do_POST()
     
 # --- main ---
 
