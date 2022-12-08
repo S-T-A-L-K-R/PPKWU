@@ -17,40 +17,40 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         print(self.path)
         parser = urlparse(self.path)
         self.path = parser.path
-        content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
-        post_data = self.rfile.read(content_length).decode() # <--- Gets the data itself
-        query = parser.query
-        cmd = ''
-        if query != '':
-            query_components = dict(qc.split("=") for qc in query.split("&"))
-            str = query_components.get("str")
-            num1 = int(query_components.get("num1"))
-            num2 = int(query_components.get("num2"))
+        content_length = int(self.headers['Content-Length'])
+        post_data = json.loads(self.rfile.read(content_length).decode())
+        if post_data != None:
+            response = {}
+            str = post_data.get("str")
+            num1 = int(post_data.get("num1"))
+            num2 = int(post_data.get("num2"))
             print(str)
             print(num1)
             print(num2)
-            
-        response =  {"lowercase" : 0, 
-                     "uppercase" : 0,
-                     "digits" : 0,
-                     "special" : 0}
-        response["lowercase"] = sum(1 for c in str if c.islower())
-        response["uppercase"] = sum(1 for c in str if c.isupper())
-        response["digits"] = sum(1 for c in str if c.isnumeric())
-        response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
-        
-            
-        response =  {"sum" : 0, 
-                     "sub" : 0,
-                     "mul" : 0,
-                     "div" : 0,
-                     "mod" : 0}
+            if str != None:
+                response["lowercase"] = 0 
+                response["uppercase"] = 0
+                response["digits"] = 0
+                response["special"] = 0
 
-        response["sum"] = num1 + num2
-        response["sub"] = num1 - num2
-        response["mul"] = num1 * num2
-        response["div"] = int(num1 / num2)
-        response["mod"] = num1 % num2
+
+                response["lowercase"] = sum(1 for c in str if c.islower())
+                response["uppercase"] = sum(1 for c in str if c.isupper())
+                response["digits"] = sum(1 for c in str if c.isnumeric())
+                response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
+                
+            if num1 != None and num2 != None:
+                response["sum"] = 0 
+                response["sub"] = 0
+                response["mul"] = 0
+                response["div"] = 0
+                response["mod"] = 0
+
+                response["sum"] = num1 + num2
+                response["sub"] = num1 - num2
+                response["mul"] = num1 * num2
+                response["div"] = int(num1 / num2)
+                response["mod"] = num1 % num2
         
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
