@@ -25,22 +25,22 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             post_data = self.rfile.read(int(content_length)).decode()
             post_data = ET.fromstring(post_data)
             if post_data != None:
-                str = post_data.find("str")
+                strng = post_data.find("str")
                 num1 = post_data.find("num1")
                 num2 = post_data.find("num2")
                 
-                if str != None:
-                    str = str.text
-                    print(str)
+                if strng != None:
+                    strng = strng.text
+                    print(strng)
                     response["lowercase"] = 0 
                     response["uppercase"] = 0
                     response["digits"] = 0
                     response["special"] = 0
 
-                    response["lowercase"] = sum(1 for c in str if c.islower())
-                    response["uppercase"] = sum(1 for c in str if c.isupper())
-                    response["digits"] = sum(1 for c in str if c.isnumeric())
-                    response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
+                    response["lowercase"] = sum(1 for c in strng if c.islower())
+                    response["uppercase"] = sum(1 for c in strng if c.isupper())
+                    response["digits"] = sum(1 for c in strng if c.isnumeric())
+                    response["special"] = len(strng) - response["lowercase"] - response["uppercase"] - response["digits"]
                     
                 if num1 != None and num2 != None:
                     num1 = int(num1.text)
