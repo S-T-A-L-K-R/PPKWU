@@ -60,14 +60,15 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                     response["mod"] = num1 % num2
             for key, value in response.items():
                 y = ET.SubElement(retval, key)
-                y.text = value
+                y.text = str(value)
+
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
             # self.wfile.write(b"Hello World!\n")
-            self.wfile.write(ElementTree.tostring(retval, encoding='utf8', method='xml'))
+            self.wfile.write(ET.tostring(retval, encoding='utf8', method='xml'))
         else:
             super().do_POST()
     
