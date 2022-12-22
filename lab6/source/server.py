@@ -24,10 +24,9 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             post_data = self.rfile.read(int(content_length)).decode()
             post_data = ET.fromstring(post_data)
             if post_data != None:
-                
-                str = post_data.get("str")
-                num1 = post_data.get("num1")
-                num2 = post_data.get("num2")
+                str = post_data.find("str")
+                num1 = post_data.find("num1")
+                num2 = post_data.find("num2")
                 print(str)
                 print(num1)
                 print(num2)
