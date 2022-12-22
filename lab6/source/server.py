@@ -58,9 +58,9 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                     response["mul"] = num1 * num2
                     response["div"] = int(num1 / num2)
                     response["mod"] = num1 % num2
-            for x in response:
-                y = ET.SubElement(retval, x.key())
-                y.text = x.value()
+            for key, value in response.items():
+                y = ET.SubElement(retval, key)
+                y.text = value
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
