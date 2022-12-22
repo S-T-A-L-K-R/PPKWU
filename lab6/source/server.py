@@ -41,7 +41,19 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                     response["uppercase"] = sum(1 for c in strng if c.isupper())
                     response["digits"] = sum(1 for c in strng if c.isnumeric())
                     response["special"] = len(strng) - response["lowercase"] - response["uppercase"] - response["digits"]
-                    
+                elif post_data.tag == 'str':
+                    strng = post_data.text
+                    print(strng)
+                    response["lowercase"] = 0 
+                    response["uppercase"] = 0
+                    response["digits"] = 0
+                    response["special"] = 0
+
+                    response["lowercase"] = sum(1 for c in strng if c.islower())
+                    response["uppercase"] = sum(1 for c in strng if c.isupper())
+                    response["digits"] = sum(1 for c in strng if c.isnumeric())
+                    response["special"] = len(strng) - response["lowercase"] - response["uppercase"] - response["digits"]
+                
                 if num1 != None and num2 != None:
                     num1 = int(num1.text)
                     num2 = int(num2.text)
