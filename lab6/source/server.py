@@ -19,6 +19,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         parser = urlparse(self.path)
         self.path = parser.path
         response = {}
+        retval = ET.Element()
         content_length = self.headers['Content-Length']
         if content_length is not None:
             post_data = self.rfile.read(int(content_length)).decode()
@@ -55,7 +56,9 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                     response["mul"] = num1 * num2
                     response["div"] = int(num1 / num2)
                     response["mod"] = num1 % num2
-        
+            for x in response:
+                y = ET.SubElement(retval, x.key())
+                y.text = x.value()
         if self.path == '/':
             self.protocol_version = 'HTTP/1.1'
             self.send_response(200)
