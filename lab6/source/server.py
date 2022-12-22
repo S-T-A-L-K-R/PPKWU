@@ -9,6 +9,7 @@ import json
 from datetime import datetime as dt
 from urllib.parse import urlparse
 import pytz
+import xml.etree.ElementTree as ET
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
@@ -20,7 +21,8 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         response = {}
         content_length = self.headers['Content-Length']
         if content_length is not None:
-            post_data = json.loads(self.rfile.read(int(content_length)).decode())
+            post_data = self.rfile.read(int(content_length)).decode()
+            post_data = ET.fromstring(post_data)
             if post_data != None:
                 
                 str = post_data.get("str")
