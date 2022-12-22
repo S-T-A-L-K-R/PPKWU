@@ -19,7 +19,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
         parser = urlparse(self.path)
         self.path = parser.path
         response = {}
-        retval = ET.Element()
+        retval = ET.Element("root")
         content_length = self.headers['Content-Length']
         if content_length is not None:
             post_data = self.rfile.read(int(content_length)).decode()
@@ -28,10 +28,10 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                 str = post_data.find("str")
                 num1 = post_data.find("num1")
                 num2 = post_data.find("num2")
-                print(str)
-                print(num1)
-                print(num2)
+                
                 if str != None:
+                    str = str.text
+                    print(str)
                     response["lowercase"] = 0 
                     response["uppercase"] = 0
                     response["digits"] = 0
@@ -43,8 +43,10 @@ class web_server(http.server.SimpleHTTPRequestHandler):
                     response["special"] = len(str) - response["lowercase"] - response["uppercase"] - response["digits"]
                     
                 if num1 != None and num2 != None:
-                    num1 = int(num1)
-                    num2 = int(num2)
+                    num1 = int(num1.text)
+                    num2 = int(num2.text)
+                    print(num1)
+                    print(num2)
                     response["sum"] = 0 
                     response["sub"] = 0
                     response["mul"] = 0
@@ -65,7 +67,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
             # self.wfile.write(b"Hello World!\n")
-            self.wfile.write(json.dumps(response).encode())
+            self.wfile.write(ElementTree.tostring(retval, encoding='utf8', method='xml'))
         else:
             super().do_POST()
     
